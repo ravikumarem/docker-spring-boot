@@ -27,7 +27,8 @@ jobs:
       env:
         ECR_REGISTRY: ${{ steps.login-pf-aws-ecr.outputs.registry }}
         ECR_REPOSITORY: ${{secrets.REPO_NAME}}
-        IMAGE_TAG: dev-a-${{ github.sha::7 }}
+        # IMAGE_TAG: dev-a-${{ github.sha::7 }}
       run: |
+        IMAGE_TAG=dev-a-$(echo $GITHUB_SHA | cut -c1-7)
         docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
         docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
